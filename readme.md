@@ -1,4 +1,4 @@
-                                                ***Site map connector***
+***Site map connector***
 
 This script will connect site maps of two sites, so provided links will lead to the same product
 
