@@ -28,7 +28,7 @@ class Token:
 
 
 def tokenize_line(line):
-    """ :returns dictionary {"isFolder": bool, "tokenized link": [ [[word]-[word]] / [[word]-[word]] / [[word]-[word]]]}
+    """ :returns dictionary {"isFolder": bool, "tokenized link": [ [{word}-{word}] / [{word}-{word}] / [{word}-{word}]]}
      """
     link_to_isFolder_dict = {}
     first_tier = []
@@ -36,7 +36,7 @@ def tokenize_line(line):
     # remove first element (its an empty string)
     list_of_token_groups.pop(0)
     try:
-        if list_of_token_groups[-1] == '\n':
+        if list_of_token_groups[-1] == '\n' or list_of_token_groups[-1] == '':
             # true if link is a folder
             link_to_isFolder_dict["isFolder"] = True
             list_of_token_groups.pop(-1)
@@ -57,17 +57,18 @@ def tokenize_line(line):
                 token = Token(TokenId.WORD, possible_token)
                 second_tier.append(token)
 
-            elif possible_token.isalnum():
-                token = Token(TokenId.WORD_WITH_NUMBERS, possible_token)
-                second_tier.append(token)
-
             elif possible_token.isnumeric():
                 token = Token(TokenId.NUMBER, possible_token)
                 second_tier.append(token)
 
-            else:
-                token = Token(TokenId.NUMBER, possible_token)
+            elif possible_token.isalnum():
+                token = Token(TokenId.WORD_WITH_NUMBERS, possible_token)
                 second_tier.append(token)
+
+            else:
+                token = Token(TokenId.SPECIAL, possible_token)
+                second_tier.append(token)
+
         if '.htm' in second_tier[-1].contents:
             second_tier[-1].contents = second_tier[-1].contents.replace('.htm', '')
 
@@ -77,7 +78,7 @@ def tokenize_line(line):
     return link_to_isFolder_dict
 
 def remove_ending(string_to_check):
-    possible_formats = ('.htm', '.html', '.asp', '.php', '\n')
+    possible_formats = ('.htm', '.html', '.asp', '.php', '\n', '.jsp')
 
     for ending in possible_formats:
         if ending in string_to_check:
