@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    {% for obj in objects %}
+        <tr>
+            <th> {{obj.link}} </th>
+            {% for candidate in obj.candidates %}
+                <td> {{ candidate }} </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+
+</table>
+</body>
+</html>
