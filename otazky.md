@@ -1,0 +1,2 @@
+- **v URL muzou byt mezery?**
+- **odkazy na vasem demu vzdy konci s "/"?**

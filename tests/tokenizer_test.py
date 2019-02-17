@@ -25,6 +25,16 @@ class test_tokenize_line(unittest.TestCase):
             for token in token_group:
                 assert (token.token_id == tokenizer.TokenId.WORD_WITH_NUMBERS)
 
+class test_detokenize_line(unittest.TestCase):
+
+    def test_detokenize(self):
+        line = '/autodily-vlastni/naradi.htm'
+        tokens = tokenizer.tokenize_line(line)
+
+        string_to_check = tokenizer.detokenize_line(tokens)
+
+        assert (line == string_to_check)
+
 
 if __name__ == '__main__':
     unittest.main()
