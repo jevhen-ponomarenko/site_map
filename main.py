@@ -1,4 +1,4 @@
-from parser import parse_file
+from parser import parse_file_trie
 from parser import load_file_as_array_of_pairs
 import compare
 import tokenizer
@@ -7,28 +7,8 @@ import colored
 from colored import stylize
 
 if __name__ == "__main__":
-    # green = colored.fg("green") + colored.attr("bold")
-    # red = colored.fg("red") + colored.attr("bold")
-    # # old_links = parse_file('old.csv')
-    # # new_links = parse_file('new.csv')
-    #
-    # old_links = parse_file('data/old.csv')
-    # new_links = parse_file('data/new.csv')
-    #
-    # candidates = compare.find_candidates_for_file(new_links, old_links)
-    #
-    # for pair in candidates:
-    #     orig_link = tokenizer.detokenize_line(pair[0]['tokenized link'])
-    #
-    #     print('link')
-    #     print(stylize(orig_link, green))
-    #     print('candidates :')
-    #     for candidate in pair[1]:
-    #         new_link = tokenizer.detokenize_line(candidate)
-    #         print(stylize(new_link, red))
-    #         print('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-    #     print('--------------------------------------------------------')
-    old_links = parse_file('data/old.csv')
+
+    old_links = parse_file_trie('data/old.csv')
     new_links = parse_file('data/new.csv')
     good = 0
     bad = 0

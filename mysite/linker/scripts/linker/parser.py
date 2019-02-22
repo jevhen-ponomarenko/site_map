@@ -1,6 +1,6 @@
 import os
-from tokenizer import tokenize_line
-import pygtrie as trie
+from .tokenizer import tokenize_line
+
 
 def parse_file(path):
     """:returns dictionary {0 : dict, 1 : dict, ...}"""
@@ -37,22 +37,3 @@ def load_file_as_array_of_pairs(path):
     file.close()
     return lines
 
-def parse_file_trie(path):
-    """:returns trie """
-    print('parsing file {0} trie'.format(path))
-    t = trie.StringTrie()
-    counter = 0
-    line_num_to_tokens_dict = {}
-
-    try:
-        file = open(path, 'r')
-        for line in file:
-            if (line == ''):
-                break
-            t[line] = ['1']
-
-        file.close()
-        return t
-
-    except FileNotFoundError:
-        print('{0} File not Found'.format(path))

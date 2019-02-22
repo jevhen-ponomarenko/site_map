@@ -1,42 +1,14 @@
+import os
+from .scripts.linker.compare import find_candidates_for_file
+from .scripts.linker.parser import parse_file
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import StreamingHttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 
 # Create your views here.
 
-ret = [
-    {
-        "link": "autodily-pomocna/skrbka-na-brambory.htm",
-        "candidates": [
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-        ]
-
-    },
-    {
-        "link": "autodily-pomocna/skrbka-na-brambory.htm",
-        "candidates": [
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-        ]
-
-    },
-    {
-        "link": "autodily-pomocna/skrbka-na-brambory.htm",
-        "candidates": [
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-        ]
-
-    },
-    {
-        "link": "autodily-pomocna/skrbka-na-brambory.htm",
-        "candidates": [
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-            "autodily-pomocna/skrbka-na-brambory-45b.htm"
-        ]
-
-    }
-]
 
 
 def home(request):
@@ -44,7 +16,24 @@ def home(request):
 
 
 def about(request):
-    context = {
-        'objects': ret
-    }
-    return render(request, 'linker/about.html', context)
+
+    module_dir = os.path.dirname(__file__)  # get current directory
+    new_file = parse_file(os.path.join(module_dir, 'scripts/linker/new.csv'))
+    old_file = parse_file(os.path.join(module_dir, 'scripts/linker/old.csv'))
+    ret = {'objects': find_candidates_for_file(new_file, old_file)}
+    return render(request, 'linker/about.html', ret)
+
+@csrf_exempt
+def save(request):
+    if request.method == "POST":
+        for index, item in enumerate(request.POST.items()):
+            for weir_index, data in item:
+                if index % 2 != 0:
+                    print('old link', data)
+                else:
+                    print('new link', data)
+
+    return render(request, 'linker/base.html')
+
+
+

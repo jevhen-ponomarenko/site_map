@@ -1,20 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<table>
-    {% for obj in objects %}
-        <tr>
-            <th> {{obj.link}} </th>
-            {% for candidate in obj.candidates %}
-                <td> {{ candidate }} </td>
-            {% endfor %}
-        </tr>
-    {% endfor %}
+{% extends "linker/base.html" %}
 
+{% block content %}
+<div class="container-fluid">
+    <div class="fixed-top">
+        <button type="button" class="btn btn-success">Save</button>
+    </div>
+</div>
+
+<table class="table table-bordered table-responsive" style="width: 100%;">
+    <thead>
+    <tr>
+        <th scope="col">Original Link</th>
+        <th scope="col">First</th>
+        <th scope="col">Second</th>
+        <th scope="col">Third</th>
+        <th scope="col">Fourth</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for obj in objects %}
+    <tr>
+        <th> {{obj.line}}</th>
+        {% for candidate in obj.candidates %}
+        <td> {{ candidate }}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
 </table>
-</body>
-</html>
+{% endblock %}
