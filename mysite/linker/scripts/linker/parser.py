@@ -1,5 +1,6 @@
 import os
 from .tokenizer import tokenize_line
+from django.core.files.storage import default_storage
 
 
 def parse_file(path):
@@ -37,3 +38,12 @@ def load_file_as_array_of_pairs(path):
     file.close()
     return lines
 
+def save_file(lines_array):
+    file = open('result.csv', 'w+');
+    for count, line in enumerate(lines_array):
+        if count % 2 == 0:
+            file.write(line + ',')
+        else:
+            file.write(line + '/' + '\n')
+
+    file.close()

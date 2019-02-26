@@ -3,6 +3,26 @@ from .tokenizer import detokenize_line
 from .tokenizer import TokenId
 import time
 
+def take_first(elem):
+    return elem[0]
+
+def determine_relevant(candidates_array, original_link):
+    """ input is array of candidates as tuple with number of same tokens and array of tokens"""
+    ret = []
+    for num, candidate in candidates_array:
+        if num >= len(original_link):
+            ret.clear()
+            ret.append(candidate)
+            return ret
+        else:
+            ret.append(candidate)
+    try:
+        ret.sort(take_first())
+    except TypeError:
+        print('empty')
+    return ret
+
+
 
 def find_candidates_for_line(file_as_dict, link_as_tokens):
     """
@@ -13,6 +33,7 @@ def find_candidates_for_line(file_as_dict, link_as_tokens):
     """
     dict_to_return = {}
     possible_candidates = []
+    possible_candidates_with_rating = []
     for link_data in file_as_dict.values():
         num_of_same_tokens = 0
         # nula protoze na jejich demu je to vzdycky jenom jedna kategorie
@@ -31,11 +52,12 @@ def find_candidates_for_line(file_as_dict, link_as_tokens):
                     break
 
         if num_of_same_tokens == len(link_as_tokens):
-            possible_candidates.append(link_data["tokenized link"][0])
+            # possible_candidates.append(link_data["tokenized link"][0])
+            possible_candidates_with_rating.append((num_of_same_tokens, link_data["tokenized link"][0]))
         elif num_of_same_tokens >= (len(link_data["tokenized link"][0])/2):
-            possible_candidates.append(link_data["tokenized link"][0])
+            possible_candidates_with_rating.append((num_of_same_tokens, link_data["tokenized link"][0]))
 
-
+    possible_candidates = determine_relevant(possible_candidates_with_rating, link_as_tokens)
 
     return possible_candidates
 
@@ -64,4 +86,5 @@ def find_candidates_for_file(file_new, file_old):
 
 
     return array_to_return
+
 

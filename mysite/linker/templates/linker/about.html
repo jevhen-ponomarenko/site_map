@@ -1,31 +1,39 @@
 {% extends "linker/base.html" %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="fixed-top">
-        <button type="button" class="btn btn-success">Save</button>
+    <div class="container-fluid">
+        <div class="fixed-top">
+            <button type="button" class="btn btn-success">Save</button>
+        </div>
     </div>
-</div>
 
-<table class="table table-bordered table-responsive" style="width: 100%;">
-    <thead>
-    <tr>
-        <th scope="col">Original Link</th>
-        <th scope="col">First</th>
-        <th scope="col">Second</th>
-        <th scope="col">Third</th>
-        <th scope="col">Fourth</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for obj in objects %}
-    <tr>
-        <th> {{obj.line}}</th>
-        {% for candidate in obj.candidates %}
-        <td> {{ candidate }}</td>
+    <table class="table table-bordered table-responsive" style="width: 100%;">
+        <thead>
+        <tr>
+            <th scope="col">Original Link</th>
+            <th scope="col">First</th>
+            <th scope="col">Second</th>
+            <th scope="col">Third</th>
+            <th scope="col">Fourth</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in objects %}
+            <tr>
+                <th> {{ obj.line }}</th>
+
+                {% if obj.candidates|length == 1 %}}
+                    <td class="bg-success" content=""> {{ obj.candidates.0 }}</td>
+                {% else %}
+
+                    {% for candidate in obj.candidates %}
+                        <td> {{ candidate }}</td>
+                    {% endfor %}
+
+                {% endif %}
+
+            </tr>
         {% endfor %}
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </tbody>
+    </table>
 {% endblock %}

@@ -1,6 +1,8 @@
 import os
 from .scripts.linker.compare import find_candidates_for_file
 from .scripts.linker.parser import parse_file
+from .scripts.linker.parser import save_file
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import StreamingHttpResponse
@@ -26,12 +28,17 @@ def about(request):
 @csrf_exempt
 def save(request):
     if request.method == "POST":
+        ret_array = []
+
         for index, item in enumerate(request.POST.items()):
-            for weir_index, data in item:
-                if index % 2 != 0:
-                    print('old link', data)
-                else:
-                    print('new link', data)
+            ret_array.append(item[1])
+            # for data in item:
+            #     if index % 2 != 0:
+            #         print('old link', data)
+            #     else:
+            #         print('new link', data)
+
+        save_file(ret_array)
 
     return render(request, 'linker/base.html')
 

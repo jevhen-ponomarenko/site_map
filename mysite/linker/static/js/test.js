@@ -32,38 +32,46 @@ $("button").on("click", null, function () {
 
     $.each(allRows, function () {
 
-        var cells = $(this).children();
+            var cells = $(this).children();
 
 
-        var header = cells.slice(0, 1);
-        var rest = cells.slice(1);
+            var header = cells.slice(0, 1);
+            var rest = cells.slice(1);
 
-        if (rest.length === 1) {
+            console.log('wut',header)
 
-            data.success.push({
-                "oldLink": header.text(),
-                "newLink": $(rest[0]).text()
-            })
+            if (header.hasClass("bg-danger")) {
 
-        } else {
-            $.each(rest, function () {
-                if ($(this).hasClass("bg-success")) {
-                    data.success.push({
-                        "oldLink": header.text(),
-                        "newLink": $(this).text()
-                    })
-                }
+                data.success.push({
+                    "oldLink": header.text(),
+                    "newLink": 'not found'
+                });
+                console.log('not found');
+            } else if (rest.length === 1) {
+                data.success.push({
+                    "oldLink": header.text(),
+                    "newLink": $(rest[0]).text()
+                })
+            } else {
+                $.each(rest, function () {
+                    if ($(this).hasClass("bg-success")) {
+                        data.success.push({
+                            "oldLink": header.text(),
+                            "newLink": $(this).text()
+                        })
+                    }
 
-            })
+                })
+            }
+
+
         }
-
-
-    });
+    );
 
     $.ajax({
-            type: "POST",
-            method : "POST",
-            url: "/linker/about/save/",
-            data: data
-        });
+        type: "POST",
+        method: "POST",
+        url: "/linker/about/save/",
+        data: data
+    });
 });
